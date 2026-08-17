@@ -45,6 +45,11 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
+.privacy-note {
+  color: #5f6368;
+  font-size: 0.75rem;
+}
+
 @media (max-width: 40rem) {
   main {
     padding: 1rem 0.75rem;

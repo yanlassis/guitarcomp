@@ -1,5 +1,4 @@
 const audioInput = document.querySelector("#audio-file");
-const fileNameOutput = document.querySelector("#file-name");
 const audioPlayer = document.querySelector("#audio-player");
 const timeDisplay = document.querySelector("#time-display");
 const playButton = document.querySelector("#play-button");
@@ -94,7 +93,6 @@ audioInput.addEventListener("change", function () {
   const selectedFile = audioInput.files[0];
 
   if (selectedFile) {
-    fileNameOutput.textContent = selectedFile.name;
     const audioUrl = URL.createObjectURL(selectedFile);
     audioPlayer.src = audioUrl;
   }
