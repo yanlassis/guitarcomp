@@ -4,8 +4,12 @@ body {
   color: #222222;
 }
 
+h1 {
+  color: #4c2a85;
+}
+
 main {
-  max-width: 48rem;
+  max-width: 48rem;    
   margin: 0 auto;
   padding: 2rem 1rem;
 }

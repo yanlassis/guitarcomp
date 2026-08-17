@@ -11,7 +11,7 @@
     <main>
       <header>
         <h1>GuitarComp</h1>
-        <p>Make learning a new instrument easier</p>
+        <p>Make learning a new instrument easier.</p>
       </header>
 
       <section>
@@ -19,12 +19,13 @@
         <label for="audio-file">Choose the audio archive</label>
         <input id="audio-file" type="file" accept="audio/*">
         <p id="file-name">No file selected</p>
+        <audio id="audio-player" controls></audio>
       </section>
 
       <section>
         <h2>Playback</h2>
-        <button type="button" disabled>Play</button>
-        <span>0:00 / 0:00</span>
+        <button id="play-button" type="button" disabled>Play</button>
+        <span id="time-display">0:00 / 0:00</span>
         <label for="progress">Progress</label>
         <input id="progress" type="range" min="0" max="100" value="0" disabled>
         <label for="speed">Speed</label>
