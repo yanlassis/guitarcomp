@@ -19,10 +19,10 @@
         <label for="audio-file">Choose the audio archive</label>
         <input id="audio-file" type="file" accept="audio/*">
         <p id="file-name">No file selected</p>
-        <audio id="audio-player" controls></audio>
+        <audio hidden id="audio-player" controls></audio>
       </section>
 
-      <section>
+      <section> 
         <h2>Playback</h2>
         <button id="play-button" type="button" disabled>Play</button>
         <span id="time-display">0:00 / 0:00</span>
@@ -38,13 +38,14 @@
 
       <section>
         <h2>Loop practice</h2>
-        <button type="button" disabled>Set A</button>
-        <button type="button" disabled>Set B</button>
-        <span>A: --:-- | B: --:--</span>
-        <label>
-          <input type="checkbox" disabled> Loop A-B
+            <button id="set-a" type="button" disabled>Set A</button>
+            <button id="set-b" type="button" disabled>Set B</button>
+            <span id="loop-display">A: --:-- | B: --:--</span>
+            <p id="loop-message" role="status"></p>
+          <label>
+            <input id="loop-toggle" type="checkbox" disabled> Loop A-B
         </label>
-        <button type="button" disabled>Clear loop</button>
+          <button id="clear-loop" type="button" disabled>Clear loop</button>
       </section>
 
     </main>

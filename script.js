@@ -4,7 +4,23 @@ const audioPlayer = document.querySelector("#audio-player");
 const timeDisplay = document.querySelector("#time-display");
 const playButton = document.querySelector("#play-button");
 const progressInput = document.querySelector("#progress");
+const speedSelect = document.querySelector("#speed");
+const setAButton = document.querySelector("#set-a");
+const setBButton = document.querySelector("#set-b");
+const loopDisplay = document.querySelector("#loop-display");
+const loopMessage = document.querySelector("#loop-message");
+const loopToggle = document.querySelector("#loop-toggle");
+const clearLoopButton = document.querySelector("#clear-loop");
 
+//standart parameters 
+const practiceState = {
+  playbackSpeed: 1,
+  loopStart: null,
+  loopEnd: null,
+  loopEnabled: false
+};
+
+//converting seconds
 function formatTime(totalSeconds) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = Math.floor(totalSeconds % 60);
@@ -12,6 +28,68 @@ function formatTime(totalSeconds) {
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
+//loop practice
+function updateLoopDisplay() {
+  let startText = "--:--";
+  let endText = "--:--";
+
+  if (practiceState.loopStart !== null) {
+    startText = formatTime(practiceState.loopStart);
+  }
+
+  if (practiceState.loopEnd !== null) {
+    endText = formatTime(practiceState.loopEnd);
+  }
+
+  loopDisplay.textContent = `A: ${startText} | B: ${endText}`;
+}
+
+function updateLoopAvailability() {
+  const bothPointsSet = practiceState.loopStart !== null && practiceState.loopEnd !== null;
+  const hasValidInterval = bothPointsSet && practiceState.loopStart < practiceState.loopEnd;
+  const hasAnyPoint = practiceState.loopStart !== null || practiceState.loopEnd !== null;
+
+  loopToggle.disabled = !hasValidInterval;
+  clearLoopButton.disabled = !hasAnyPoint;
+
+  if (bothPointsSet && !hasValidInterval) {
+    loopMessage.textContent = "Point B must be after point A.";
+  } else {
+    loopMessage.textContent = "";
+  }
+}
+
+setAButton.addEventListener("click", function () {
+  practiceState.loopStart = audioPlayer.currentTime;
+  updateLoopDisplay();
+  updateLoopAvailability();
+});
+
+setBButton.addEventListener("click", function () {
+  practiceState.loopEnd = audioPlayer.currentTime;
+  updateLoopDisplay();
+  updateLoopAvailability();
+});
+
+loopToggle.addEventListener("change", function () {
+  practiceState.loopEnabled = loopToggle.checked;
+
+  if (practiceState.loopEnabled) {
+    audioPlayer.currentTime = practiceState.loopStart;
+  }
+});
+
+clearLoopButton.addEventListener("click", function () {
+  practiceState.loopStart = null;
+  practiceState.loopEnd = null;
+  practiceState.loopEnabled = false;
+  loopToggle.checked = false;
+  updateLoopDisplay();
+  updateLoopAvailability();
+});
+
+
+//when an audio is selected
 audioInput.addEventListener("change", function () {
   const selectedFile = audioInput.files[0];
 
@@ -29,8 +107,13 @@ audioPlayer.addEventListener("loadedmetadata", function () {
   progressInput.max = audioPlayer.duration;
   progressInput.value = 0;
   progressInput.disabled = false;
+  speedSelect.disabled = false;
+  setAButton.disabled = false;
+  setBButton.disabled = false;
+  audioPlayer.playbackRate = practiceState.playbackSpeed;
 });
 
+//play button
 playButton.addEventListener("click", function () {
   if (audioPlayer.paused) {
     audioPlayer.play();
@@ -51,7 +134,12 @@ audioPlayer.addEventListener("ended", function () {
   playButton.textContent = "Play";
 });
 
+//time / progressbar update
 audioPlayer.addEventListener("timeupdate", function () {
+  if (practiceState.loopEnabled && audioPlayer.currentTime >= practiceState.loopEnd) {
+    audioPlayer.currentTime = practiceState.loopStart;
+  }
+
   progressInput.value = audioPlayer.currentTime;
   const currentTime = formatTime(audioPlayer.currentTime);
   const duration = formatTime(audioPlayer.duration);
@@ -60,4 +148,10 @@ audioPlayer.addEventListener("timeupdate", function () {
 
 progressInput.addEventListener("input", function () {
   audioPlayer.currentTime = Number(progressInput.value);
+});
+
+//speed selector
+speedSelect.addEventListener("change", function () {
+  practiceState.playbackSpeed = Number(speedSelect.value);
+  audioPlayer.playbackRate = practiceState.playbackSpeed;
 });
