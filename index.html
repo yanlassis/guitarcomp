@@ -16,10 +16,11 @@
 
       <section>
         <h2>Upload the song you would like to learn</h2>
-          <label for="audio-file">Choose the audio archive</label>
-          <input id="audio-file" type="file" accept="audio/*">
-          <p class="privacy-note">Your audio stays on this device and is not uploaded.</p>
-        <audio hidden id="audio-player" controls></audio>
+          <label for="audio-file">Choose an audio file</label>
+            <input id="audio-file" type="file" accept="audio/*" aria-describedby="audio-privacy audio-message">
+            <p id="audio-privacy" class="privacy-note">Your audio stays on this device and is not uploaded.</p>
+            <p id="audio-message" role="alert"></p>
+          <audio hidden id="audio-player" controls></audio>
       </section>
 
       <section> 
@@ -43,7 +44,7 @@
             <span id="loop-display">A: --:-- | B: --:--</span>
             <p id="loop-message" role="status"></p>
           <label>
-            <input id="loop-toggle" type="checkbox" disabled> Loop A-B
+            <input id="loop-toggle" type="checkbox" aria-describedby="loop-display loop-message" disabled> Loop A-B
         </label>
           <button id="clear-loop" type="button" disabled>Clear loop</button>
       </section>

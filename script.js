@@ -1,4 +1,5 @@
 const audioInput = document.querySelector("#audio-file");
+const audioMessage = document.querySelector("#audio-message");
 const audioPlayer = document.querySelector("#audio-player");
 const timeDisplay = document.querySelector("#time-display");
 const playButton = document.querySelector("#play-button");
@@ -78,37 +79,65 @@ loopToggle.addEventListener("change", function () {
   }
 });
 
-clearLoopButton.addEventListener("click", function () {
+function resetLoop() {
   practiceState.loopStart = null;
   practiceState.loopEnd = null;
   practiceState.loopEnabled = false;
   loopToggle.checked = false;
   updateLoopDisplay();
   updateLoopAvailability();
-});
+}
 
+function setAudioControlsDisabled(shouldDisable) {
+  playButton.disabled = shouldDisable;
+  progressInput.disabled = shouldDisable;
+  speedSelect.disabled = shouldDisable;
+  setAButton.disabled = shouldDisable;
+  setBButton.disabled = shouldDisable;
+}
+
+clearLoopButton.addEventListener("click", function () {
+  resetLoop();
+});
 
 //when an audio is selected
 audioInput.addEventListener("change", function () {
   const selectedFile = audioInput.files[0];
 
-  if (selectedFile) {
-    const audioUrl = URL.createObjectURL(selectedFile);
-    audioPlayer.src = audioUrl;
+  audioPlayer.pause();
+  playButton.textContent = "Play";
+  progressInput.value = 0;
+  timeDisplay.textContent = "0:00 / 0:00";
+  audioMessage.textContent = "";
+  resetLoop();
+  setAudioControlsDisabled(true);
+
+  if (!selectedFile) {
+    audioMessage.textContent = "Choose an audio file.";
+    return;
   }
+
+  const audioUrl = URL.createObjectURL(selectedFile);
+  audioPlayer.src = audioUrl;
 });
 
 audioPlayer.addEventListener("loadedmetadata", function () {
   const duration = formatTime(audioPlayer.duration);
   timeDisplay.textContent = `0:00 / ${duration}`;
-  playButton.disabled = false;
   progressInput.max = audioPlayer.duration;
   progressInput.value = 0;
-  progressInput.disabled = false;
-  speedSelect.disabled = false;
-  setAButton.disabled = false;
-  setBButton.disabled = false;
+  setAudioControlsDisabled(false);
   audioPlayer.playbackRate = practiceState.playbackSpeed;
+});
+
+audioPlayer.addEventListener("error", function () {
+  audioMessage.textContent = "This audio file could not be played. Try another audio file.";
+  audioPlayer.pause();
+  playButton.textContent = "Play";
+  progressInput.value = 0;
+  timeDisplay.textContent = "0:00 / 0:00";
+  resetLoop();
+  setAudioControlsDisabled(true);
 });
 
 //play button
