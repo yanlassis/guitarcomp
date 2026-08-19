@@ -1,3 +1,5 @@
+import { formatTime, isValidLoop } from "./utils.js";
+
 const audioInput = document.querySelector("#audio-file");
 const audioMessage = document.querySelector("#audio-message");
 const audioPlayer = document.querySelector("#audio-player");
@@ -20,14 +22,6 @@ const practiceState = {
   loopEnabled: false
 };
 
-//converting seconds
-function formatTime(totalSeconds) {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = Math.floor(totalSeconds % 60);
-
-  return `${minutes}:${String(seconds).padStart(2, "0")}`;
-}
-
 //loop practice
 function updateLoopDisplay() {
   let startText = "--:--";
@@ -46,7 +40,7 @@ function updateLoopDisplay() {
 
 function updateLoopAvailability() {
   const bothPointsSet = practiceState.loopStart !== null && practiceState.loopEnd !== null;
-  const hasValidInterval = bothPointsSet && practiceState.loopStart < practiceState.loopEnd;
+  const hasValidInterval = isValidLoop(practiceState.loopStart, practiceState.loopEnd);
   const hasAnyPoint = practiceState.loopStart !== null || practiceState.loopEnd !== null;
 
   loopToggle.disabled = !hasValidInterval;
