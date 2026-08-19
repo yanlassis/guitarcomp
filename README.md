@@ -42,6 +42,3 @@ The automated tests cover time formatting and A–B loop validation.
 - `utils.test.js` tests the functions in `utils.js`.
 - `package.json` defines the JavaScript module type and the test command.
 
-## Deployment
-
-GitHub Pages will host the static application. The public address will be added after the first deployment.
