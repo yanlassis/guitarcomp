@@ -23,16 +23,6 @@ The selected audio stays on the user's device and is not uploaded. GuitarComp ha
 
 A local server is required because the browser loads the JavaScript files as modules.
 
-## Tests
-
-Node.js is required, but this project has no external packages to install. From the `guitarcomp` folder, run:
-
-```text
-npm test
-```
-
-The automated tests cover time formatting and A–B loop validation.
-
 ## Project structure
 
 - `index.html` defines the page and its controls.
