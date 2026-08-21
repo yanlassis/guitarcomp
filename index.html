@@ -15,6 +15,24 @@
       </header>
 
       <section>
+        <h2>Practice with a YouTube tutorial</h2>
+        <form id="youtube-form">
+          <label for="youtube-url">Paste the video URL:</label>
+          <input
+            id="youtube-url"
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=..."
+            aria-describedby="youtube-help youtube-message"
+          >
+          <button id="youtube-submit" type="submit" disabled>Load</button>
+        </form>
+        <p id="youtube-help" class="privacy-note">
+          Supports youtube.com/watch and youtu.be video links.
+        </p>
+        <p id="youtube-message" role="status"></p>
+      </section>
+
+      <section>
         <h2>Upload the song you would like to learn</h2>
           <label for="audio-file">Choose an audio file</label>
             <input id="audio-file" type="file" accept="audio/*" aria-describedby="audio-privacy audio-message">
