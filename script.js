@@ -1,4 +1,4 @@
-import { formatTime, isValidLoop } from "./utils.js";
+import { formatTime, isValidLoop, extractYouTubeVideoId } from "./utils.js";
 
 const audioInput = document.querySelector("#audio-file");
 const audioMessage = document.querySelector("#audio-message");
@@ -13,6 +13,29 @@ const loopDisplay = document.querySelector("#loop-display");
 const loopMessage = document.querySelector("#loop-message");
 const loopToggle = document.querySelector("#loop-toggle");
 const clearLoopButton = document.querySelector("#clear-loop");
+const youtubeForm = document.querySelector("#youtube-form");
+const youtubeUrlInput = document.querySelector("#youtube-url");
+const youtubeSubmit = document.querySelector("#youtube-submit");
+const youtubeMessage = document.querySelector("#youtube-message");
+
+//yt url loading/validation
+youtubeUrlInput.addEventListener("input", function () {
+  const hasText = youtubeUrlInput.value.trim() !== "";
+  youtubeSubmit.disabled = !hasText;
+  youtubeMessage.textContent = "";
+});
+
+youtubeForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  const videoId = extractYouTubeVideoId(youtubeUrlInput.value.trim());
+
+  if (videoId === null) {
+    youtubeMessage.textContent = "Enter a supported YouTube video URL.";
+    return;
+  }
+
+  youtubeMessage.textContent = `Recognized video ID: ${videoId}`;
+});
 
 //standart parameters 
 const practiceState = {
@@ -94,7 +117,7 @@ clearLoopButton.addEventListener("click", function () {
   resetLoop();
 });
 
-//when an audio is selected
+//when an audio file is selected
 audioInput.addEventListener("change", function () {
   const selectedFile = audioInput.files[0];
 
